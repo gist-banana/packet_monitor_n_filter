@@ -1,10 +1,19 @@
 from bcc import BPF
 import time
 from ast import literal_eval
+import sys
 
 # To run this progrm, change the INTERFACE NAME below and run this program
 
-INTERFACE = "eno2"
+def help():
+    print("execute: {0} <net_interface>".format(sys.argv[0]))
+    print("e.g.: {0} eno1\n".format(sys.argv[0]))
+    exit(1)
+
+if len(sys.argv) != 2:
+    help()
+elif len(sys.argv) == 2:
+    INTERFACE = sys.argv[1]
 
 bpf_text = """
 
@@ -107,6 +116,8 @@ try:
         print('\n')
         for i in range(0,output_len):
             tester = int(str(packet_cnt_output[i][0])[8:-2]) # initial output omitted from the kernel space program
+            if len(str(tester)) != 20:
+                break
             tester = int(str(bin(tester))[2:]) # raw file
             src = int(str(tester)[:32],2) # part1 
             dst = int(str(tester)[32:],2)
