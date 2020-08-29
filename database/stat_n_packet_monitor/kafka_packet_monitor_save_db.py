@@ -3,10 +3,19 @@ import sys
 from ast import literal_eval
 from pymongo import MongoClient
 import pytz
+import sys
 #define information about kafka
 
-bootstrap_servers = ['210.117.251.25:9092']
-topicName = 'packetmonitor'
+def help():
+    print("excute: {0} <bootstrap_server> <topic_name>".format(sys.argv[0]))
+    print("e.g.: {0} 192.168.0.1:9092 topic_name\n".format(sys.argv[0]))
+    exit(1)
+
+if len(sys.argv) != 3:
+    help()
+elif len(sys.argv) == 3:
+    bootstrap_servers = sys.argv[1]
+    topicName = sys.argv[2]
 
 consumer = KafkaConsumer(topicName, bootstrap_servers = bootstrap_servers)
 
