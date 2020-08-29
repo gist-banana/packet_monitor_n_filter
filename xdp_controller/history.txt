@@ -1,0 +1,38 @@
+backup)
+
+drop_by_reading_map.py
+- looks up the value in the eBPF map and block specific IP addresses
+
+hash_map_xdp_drop.py
+- Use eBPF map as a blacklist but this time, change an array to a bpf hash
+
+backup_hash_map_xdp_drop.py & backup_hash_map_xdp_drop.c
+- Uses BPF hash, filters the packets if the ip address exists in the hash map's key.
+- Now need to test if it will work for multiple ip addresses in the blacklist
+
+add_value_etc.
+- perfect backup before implementing kafka
+- ex input) 192 168 000 002 a
+           or
+            192 168 000 002 d
+
+backup_add_value_to_map_black_list_map.py:
+* prior to launch : 
+	- run kafka zookeeper / kafka broker before launch
+	- run hash_map_xdp_drop.py [dev name] 
+- input has to be in a specific form. a combination of four three digits
+- ex input) 192 168 000 002 a
+	or
+            192 168 000 002 d
+
+backup_read_db_and_add_to_filter.py :
+- can reach mongodb but only reads rcved packet numbers
+- Need to make it read ip_address as well
+- Need to make it distinguish which servers to actually enable XDP on (Right now can't distinguish servers and send them individual commands)
+
+backup_2_read_db_and_add_to_filter.py :
+- can distinguish servers and their respective incoming packets
+- now need to add xdp controller
+
+backup_3_read_db_and_add_to_filter.py :
+- final form before implementing kafka functionality (rcv msg from the controller)

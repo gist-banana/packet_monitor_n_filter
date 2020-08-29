@@ -1,0 +1,11 @@
+db_saver.py : 
+- saving db here
+
+backup_db_saver.py :
+- data being saved in mongodb verified.
+
+kafka_packet_monitor_save_db.py:
+- initial backup before implementing database
+
+backup_3_kafka_packet_monitor_save_db.py:
+- save parsed information in the database. Need to change IP configurations

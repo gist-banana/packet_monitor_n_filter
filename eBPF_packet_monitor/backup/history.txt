@@ -1,0 +1,91 @@
+>> 2019.12.16 
+
+backup_xdp.c : every ip packet header information parsed and saved
+- to be improved : save parsed packet header information in an eBPF map
+* found error. Values passed to the eBPF map were damaged when they were passed to the user space program. 
+* error has been fixed in backup_2_xdp.c and backup_2_xdp.py
+
+backup_2_xdp.c
+backup_2_xdp.py : every ip packet header information parsed, saved, passed to the user space program without an error.
+- Errors from the backup_xdp.c has been fixed in this version
+
+backup_3_xdp.c
+backup_3_xdp.py : every header info. are printed in a pretty easy-to-read form
+
+xdp_db_saver.py
+xdp_db_saver.c : 
+- This program will receieve data from xdp and save it in the mongodb
+
+backup_4_xdp.c
+backup_4_xdp.py : 
+- Backup before increasing the eBPF map sizes
+
+backup_5_xdp.c
+backup_5_xdp.py :
+- Now it can resolve packets that income at an interval of 0.01 sec
+
+backup_6_xdp.c
+backup_6_xdp.py :
+- Backed up version which works fine. Parses every info. inside the packet
+
+backup_7_xdp.c
+backup_7_xdp.py :
+- all the packet parsing parts erased. Kinda identical with xdp_drop_count.py but this still has the codes that parse packet header information. It just doens't really save them anywehre
+
+
+backup_8_xdp.c
+backup_8_xdp.py :
+- can handle ping flood packets coming through. The earlier versions of the program could not handle pign flood packets. This was an issue with the user space program's scheme to decide when to output the incoming infomration
+- This one should be the one that all the future programs will be going back to if there should be a problem
+
+*** actually DOESN'T FUCKING WORK FOR FUCK'S SAKES FUCK FUCK FUCK FUCK FUCK FUCK
+
+
+*******************************************NOW WORKING ON ****************************************************
+
+kafka_packet_monitor.py
+
+**************************************PACKET MONITOR BACK UP**************************************************
+
+packet_monitor.py :
+- this is the program I'm working on right now.
+* perf_ouput cannot be applied to this program. It's a socket filter and perf_output is only valid for tracing programs
+
+backup_packet_monitor_using_kprintk :
+- uses printk to send parsed data.
+- Only up to 3 arguments passable using kprintk
+
+backup_2_packet_monitor.py :
+- perf_submit is put into the kernel space program
+- Now need to implement perf_submit user space program
+
+backup_3_packet_monitor.py :
+- Now working on black_list array.
+- I will save IP addresses to be blocked in black_list and filter all those packets
+
+backup_4_packet_monitor.py :
+- backup right before implementing Kafka in packet_monitor.py
+
+====> FROM NOW ON, WILL IMPLEMENT KAFKA ON THE PACKET_MONITOR
+
+kafka_packet_monitor.py :
+- will implement python kafka here
+
+******************************************************************************************************************
+
+packet_monitor.py :
+- Implementing perf_submit in the user space program
+
+backup_perf_packet_monitor.py :
+- Now use skb perf submit to send data from the kernel space to the user space. Sends only one data.
+- (kernel : u64 int) -> (user space : hex) // arrives as hex
+
+backup_2_perf_packet_monitor.py :
+- Same as backup_perf_packet_monitor.py / sends data as u64 and receives data from the user space as hex
+- Now sends multiple data. I can now send data in order to the user space and catch them
+
+backup_3_perf_packet_monitor.py :
+- keep perf submitting and the necessary data are output in the last perf outputs
+
+backup_4_perf_packet_monitor.py :
+- now data from the user space is written on a file
